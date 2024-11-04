@@ -18,8 +18,7 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "docker:db": "docker-compose -f docker-compose.db.yml up -d",
-        "prepare": "husky install"
+        "docker:db": "docker-compose -f docker-compose.db.yml up -d"
     },
     "lint-staged": {
         "{src,test}/**/*.{js,ts}": [
@@ -31,6 +30,10 @@
         "@nestjs/common": "9.4.0",
         "@nestjs/core": "9.4.0",
         "@nestjs/platform-express": "9.4.0",
+        "@prisma/client": "4.16.2",
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.1",
+        "date-fns": "^4.1.0",
         "reflect-metadata": "0.1.13",
         "rxjs": "7.2.0"
     },
