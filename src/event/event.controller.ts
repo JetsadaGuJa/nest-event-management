@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { EventService } from './event.service';
-import { createEventDto } from './event.model.dto';
+import { createEventDto, createEventDtoList } from './event.model.dto';
 
 @Controller('event')
 export class EventController {
@@ -17,7 +17,7 @@ export class EventController {
     }
 
     @Post('event-batch')
-    async addEventBatch(@Body() eventData: createEventDto[]) {
+    async addEventBatch(@Body() eventData: createEventDtoList) {
         await this.eventService.createEventBatch(eventData);
     }
 }
