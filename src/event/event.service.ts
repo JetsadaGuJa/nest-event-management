@@ -99,38 +99,60 @@ export class EventService {
         const sort: Prisma.EventOrderByWithRelationInput = {
             [orderField]: orderBy,
         };
+        const queryWhere: Prisma.EventWhereInput = {};
+
+        if (filter?.eventName) {
+            queryWhere.eventName = { contains: filter.eventName };
+        }
+
+        // queryWhere.firstName;
+
         this.logger.log('Start: event list....');
         const query: Prisma.EventFindManyArgs = {
             skip: perPage * page,
             take: perPage,
-            where: {
-                firstName: { contains: filter?.firstName || '' },
-                lastName: { contains: filter?.lastName || '' },
-                eventName: { contains: filter?.eventName || '' },
-                companyName: { contains: filter?.companyName || '' },
-                registrationDate: filter?.registrationDate
-                    ? {
-                          gte: new Date(filter?.registrationDate)
-                              .setHours(0)
-                              .toString(),
-                          lte: new Date(filter?.registrationDate)
-                              .setHours(23)
-                              .toString(),
-                      }
-                    : {},
-            },
+            where: { ...queryWhere },
+            // {
+            //     firstName: filter?.firstName
+            //         ? { contains: filter?.firstName }
+            //         : {},
+            //     lastName: filter?.lastName
+            //         ? { contains: filter?.lastName }
+            //         : {},
+            //     eventName: filter?.eventName
+            //         ? { contains: filter?.eventName }
+            //         : {},
+            //     companyName: filter?.companyName
+            //         ? { contains: filter?.companyName }
+            //         : {},
+            //     registrationDate: filter?.registrationDate
+            //         ? {
+            //               gte: new Date(filter?.registrationDate)
+            //                   .setHours(0)
+            //                   .toString(),
+            //               lte: new Date(filter?.registrationDate)
+            //                   .setHours(23)
+            //                   .toString(),
+            //           }
+            //         : {},
+            // },
             orderBy: sort,
         };
         const eventCount = await this.prisma.event.count();
-        return await this.prisma.event.findMany(query).then((response) => {
-            return {
-                ...response,
-                meta: {
-                    total: eventCount,
-                    page,
-                    perPage,
-                },
-            };
-        });
+        return await this.prisma.event
+            .findMany(
+                { ...query },
+                // { where: { eventName: { contains: 'Event 4' } } },
+            )
+            .then((response) => {
+                return {
+                    ...response,
+                    meta: {
+                        total: eventCount,
+                        page,
+                        perPage,
+                    },
+                };
+            });
     }
 }

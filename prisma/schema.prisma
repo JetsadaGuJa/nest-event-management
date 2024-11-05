@@ -1,6 +1,6 @@
 generator client {
-  provider  = "prisma-client-js"
-  output    = "../node_modules/.prisma/client"
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -11,8 +11,7 @@ datasource db {
 
 model Event {
   id               Int      @id @default(autoincrement())
-  firstName        String
-  lastName         String
+  name             String
   eventName        String   @unique
   registrationDate DateTime
   companyName      String

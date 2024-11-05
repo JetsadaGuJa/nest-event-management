@@ -10,10 +10,7 @@ import { Type } from 'class-transformer';
 
 export class createEventDto {
     @IsNotEmpty()
-    firstName: string;
-
-    @IsNotEmpty()
-    lastName: string;
+    name: string;
 
     @IsNotEmpty()
     eventName: string;
