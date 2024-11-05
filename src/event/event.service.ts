@@ -5,7 +5,7 @@ import {
     Logger,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Event } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { createEventDto, createEventDtoList } from './event.model.dto';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class EventService {
 
     constructor(private prisma: PrismaService) {}
 
-    async events(): Promise<Event[]> {
+    async events() {
         this.logger.log('Start: event list....');
         return this.prisma.event.findMany();
     }
@@ -75,5 +75,62 @@ export class EventService {
                 skipDuplicates: true,
             });
         }
+    }
+    async eventsList(data: {
+        orderField?: string;
+        orderBy?: 'asc' | 'desc';
+        filter?: {
+            firstName?: string;
+            lastName?: string;
+            eventName?: string;
+            companyName?: string;
+            registrationDate?: string;
+        };
+        page?: number;
+        perPage?: number;
+    }) {
+        const {
+            orderBy = 'asc',
+            orderField = 'registrationDate',
+            page = 1,
+            perPage = 10,
+            filter = {},
+        } = data;
+        const sort: Prisma.EventOrderByWithRelationInput = {
+            [orderField]: orderBy,
+        };
+        this.logger.log('Start: event list....');
+        const query: Prisma.EventFindManyArgs = {
+            skip: perPage * page,
+            take: perPage,
+            where: {
+                firstName: { contains: filter?.firstName || '' },
+                lastName: { contains: filter?.lastName || '' },
+                eventName: { contains: filter?.eventName || '' },
+                companyName: { contains: filter?.companyName || '' },
+                registrationDate: filter?.registrationDate
+                    ? {
+                          gte: new Date(filter?.registrationDate)
+                              .setHours(0)
+                              .toString(),
+                          lte: new Date(filter?.registrationDate)
+                              .setHours(23)
+                              .toString(),
+                      }
+                    : {},
+            },
+            orderBy: sort,
+        };
+        const eventCount = await this.prisma.event.count();
+        return await this.prisma.event.findMany(query).then((response) => {
+            return {
+                ...response,
+                meta: {
+                    total: eventCount,
+                    page,
+                    perPage,
+                },
+            };
+        });
     }
 }

@@ -20,4 +20,24 @@ export class EventController {
     async addEventBatch(@Body() eventData: createEventDtoList) {
         await this.eventService.createEventBatch(eventData);
     }
+
+    @Post('list')
+    async getList(
+        @Body()
+        data: {
+            orderField?: string;
+            orderBy?: 'asc' | 'desc';
+            filter?: {
+                firstName?: string;
+                lastName?: string;
+                eventName?: string;
+                companyName?: string;
+                registrationDate?: string;
+            };
+            page?: number;
+            perPage?: number;
+        },
+    ) {
+        return this.eventService.eventsList(data);
+    }
 }
