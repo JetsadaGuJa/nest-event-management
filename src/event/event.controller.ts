@@ -28,8 +28,7 @@ export class EventController {
             orderField?: string;
             orderBy?: 'asc' | 'desc';
             filter?: {
-                firstName?: string;
-                lastName?: string;
+                name?: string;
                 eventName?: string;
                 companyName?: string;
                 registrationDate?: string;
