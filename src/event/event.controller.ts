@@ -15,4 +15,9 @@ export class EventController {
     async addEvent(@Body() eventData: createEventDto) {
         await this.eventService.createEvent(eventData);
     }
+
+    @Post('event-batch')
+    async addEventBatch(@Body() eventData: createEventDto[]) {
+        await this.eventService.createEventBatch(eventData);
+    }
 }

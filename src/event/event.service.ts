@@ -12,11 +12,12 @@ export class EventService {
     constructor(private prisma: PrismaService) {}
 
     async events(): Promise<Event[]> {
-        this.logger.log('Get event list....');
+        this.logger.log('Start: event list....');
         return this.prisma.event.findMany();
     }
 
     async createEvent(data: createEventDto): Promise<Event> {
+        this.logger.log('Start: create event....');
         this.logger.log('Validate duplicate event name....');
         const checkDup = await this.prisma.event.findFirst({
             where: {
@@ -31,5 +32,19 @@ export class EventService {
         return this.prisma.event.create({
             data,
         });
+    }
+
+    async createEventBatch(data: createEventDto[]) {
+        const eventBatch = await this.prisma.event.createManyAndReturn({
+            data: [...data],
+            skipDuplicates: true,
+        });
+        if (eventBatch.length > 0) {
+            this.logger.log('dup list ==>', eventBatch);
+            return eventBatch;
+        }
+        this.logger.log('dup list ==>', eventBatch);
+
+        return eventBatch;
     }
 }
