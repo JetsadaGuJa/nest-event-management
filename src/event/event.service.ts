@@ -63,7 +63,7 @@ export class EventService {
             });
 
             throw new BadRequestException({
-                massage: 'Duplicate date',
+                massage: 'Duplicate data',
                 status: HttpStatus.BAD_REQUEST,
                 data: findDuplicate,
                 responseMassage: '',
