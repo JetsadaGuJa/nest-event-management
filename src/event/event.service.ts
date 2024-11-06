@@ -93,8 +93,8 @@ export class EventService {
         const {
             orderBy = 'desc',
             orderField = 'registrationDate',
-            page = 1,
-            perPage = 10,
+            // page = 1,
+            // perPage = 10,
             filter = {},
         } = data;
         this.logger.debug('Filter data!! ==>', filter);
@@ -122,8 +122,8 @@ export class EventService {
                         : {},
                 },
                 orderBy: { [orderField]: orderBy },
-                take: perPage,
-                skip: perPage * (page - 1),
+                // take: perPage,
+                // skip: perPage * (page - 1),
             })
             .then((response) => {
                 this.logger.log('Success!! ==>', response);
@@ -131,8 +131,8 @@ export class EventService {
                     list: [...response],
                     meta: {
                         total: eventCount,
-                        page,
-                        perPage,
+                        // page,
+                        // perPage,
                     },
                 };
             });
