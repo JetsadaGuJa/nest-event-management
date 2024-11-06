@@ -118,8 +118,9 @@ export class EventService {
                 skip: perPage * (page - 1),
             })
             .then((response) => {
+                this.logger.log('Success!! ==>', response);
                 return {
-                    ...response,
+                    list: [...response],
                     meta: {
                         total: eventCount,
                         page,
