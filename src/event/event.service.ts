@@ -20,11 +20,6 @@ export class EventService {
 
     constructor(private prisma: PrismaService) {}
 
-    async events() {
-        this.logger.log('Start: event list....');
-        return this.prisma.event.findMany();
-    }
-
     async createEvent(data: createEventDto) {
         this.logger.debug('Start: create event....', data);
         this.logger.debug('Validate duplicate event name....');
@@ -90,14 +85,8 @@ export class EventService {
     }
 
     async eventsList(data: filterEvent<search>) {
-        const {
-            orderBy = 'desc',
-            orderField = 'id',
-            // page = 1,
-            // perPage = 10,
-            filter = {},
-        } = data;
-        const startDate = new Date(`${filter.registrationDate}`).setHours(
+        const { orderBy, orderField, filter } = data;
+        const startDate = new Date(`${filter?.registrationDate}`).setHours(
             0,
             0,
             0,
@@ -105,37 +94,30 @@ export class EventService {
         );
 
         const eventCount = await this.prisma.event.count();
-        return await this.prisma.event
-            .findMany({
-                where: {
-                    name: filter?.name ? { contains: filter?.name } : {},
-                    eventName: filter?.eventName
-                        ? { contains: filter.eventName }
-                        : {},
-                    companyName: filter?.companyName
-                        ? { contains: filter?.companyName }
-                        : {},
-                    registrationDate: filter?.registrationDate
-                        ? {
-                              lte: new Date(startDate),
-                              gte: new Date(startDate),
-                          }
-                        : {},
-                },
-                orderBy: { [orderField]: orderBy },
-                // take: perPage,
-                // skip: perPage * (page - 1),
-            })
-            .then((response) => {
-                this.logger.log('Success!! ==>', response);
-                return {
-                    list: [...response],
-                    meta: {
-                        total: eventCount,
-                        // page,
-                        // perPage,
-                    },
-                };
-            });
+        const response = await this.prisma.event.findMany({
+            where: {
+                name: filter?.name ? { contains: filter.name } : {},
+                eventName: filter?.eventName
+                    ? { contains: filter.eventName }
+                    : {},
+                companyName: filter?.companyName
+                    ? { contains: filter.companyName }
+                    : {},
+                registrationDate: filter?.registrationDate
+                    ? {
+                          lte: new Date(startDate),
+                          gte: new Date(startDate),
+                      }
+                    : {},
+            },
+            orderBy: { [orderField]: orderBy },
+        });
+        this.logger.warn('List Event Data !!! ===>', response);
+        return {
+            list: response,
+            meta: {
+                total: eventCount,
+            },
+        };
     }
 }

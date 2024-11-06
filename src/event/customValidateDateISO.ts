@@ -16,19 +16,11 @@ export class CustomValidateDate implements ValidatorConstraintInterface {
         // return new Date(args.value) === 'Invalid Date';
         const date = new Date(args.value);
         if (Object.prototype.toString.call(date) === '[object Date]') {
-            // it is a date
             if (isNaN(date.getTime())) {
-                // d.getTime() or d.valueOf() will also work
-                // date object is not valid
                 return false;
-            } else {
-                // date object is valid
-                return true;
             }
-        } else {
-            // not a date object
-            return true;
         }
+        return true;
     }
 
     defaultMessage(args: ValidationArguments) {

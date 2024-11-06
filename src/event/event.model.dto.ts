@@ -3,6 +3,7 @@ import {
     IsDateString,
     IsNotEmpty,
     IsOptional,
+    IsString,
     Validate,
     ValidateNested,
 } from 'class-validator';
@@ -34,10 +35,12 @@ export class createEventDtoList {
 
 export class filterEvent<T> {
     @IsOptional()
-    orderField?: string = 'id';
+    @IsString()
+    orderField = 'id';
 
     @IsOptional()
-    orderBy?: 'asc' | 'desc' = 'desc';
+    @IsString()
+    orderBy: 'asc' | 'desc' = 'desc';
 
     @IsOptional()
     filter?: T;
