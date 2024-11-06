@@ -39,13 +39,13 @@ export class EventService {
         if (checkDup) {
             this.logger.error('Event Name already exists');
             throw new BadRequestException({
-                massage: {
+                message: {
                     field: 'eventName',
-                    massage: 'Event Name already exists',
+                    message: 'Event Name already exists',
                 },
                 status: HttpStatus.BAD_REQUEST,
                 data: {},
-                responseMassage: 'already exists',
+                responseMessage: 'already exists',
             });
         }
 
@@ -70,15 +70,15 @@ export class EventService {
             });
 
             throw new BadRequestException({
-                massage: findDuplicate.map(() => {
+                message: findDuplicate.map(() => {
                     return {
                         field: 'eventName',
-                        massage: 'Event Name already exists',
+                        message: 'Event Name already exists',
                     };
                 }),
                 status: HttpStatus.BAD_REQUEST,
                 data: {},
-                responseMassage: 'already exists',
+                responseMessage: 'already exists',
             });
         } else {
             this.logger.warn('Item no duplicate ==>');
