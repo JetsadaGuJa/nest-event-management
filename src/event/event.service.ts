@@ -40,7 +40,7 @@ export class EventService {
             this.logger.error('Event Name already exists');
             throw new BadRequestException({
                 massage: {
-                    field: 'event',
+                    field: 'eventName',
                     massage: 'Event Name already exists',
                 },
                 status: HttpStatus.BAD_REQUEST,
