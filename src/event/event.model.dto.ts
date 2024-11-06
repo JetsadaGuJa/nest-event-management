@@ -37,7 +37,7 @@ export class filterEvent<T> {
     orderField?: string = 'registrationDate';
 
     @IsOptional()
-    orderBy?: 'asc' | 'desc' = 'asc';
+    orderBy?: 'asc' | 'desc' = 'desc';
 
     @IsOptional()
     filter?: T;
