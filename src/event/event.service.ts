@@ -5,7 +5,12 @@ import {
     Logger,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { createEventDto, createEventDtoList } from './event.model.dto';
+import {
+    createEventDto,
+    createEventDtoList,
+    filterEvent,
+    search,
+} from './event.model.dto';
 
 @Injectable()
 export class EventService {
@@ -76,18 +81,7 @@ export class EventService {
         }
     }
 
-    async eventsList(data: {
-        orderField?: string;
-        orderBy?: 'asc' | 'desc';
-        filter?: {
-            name?: string;
-            eventName?: string;
-            companyName?: string;
-            registrationDate?: string;
-        };
-        page?: number;
-        perPage?: number;
-    }) {
+    async eventsList(data: filterEvent<search>) {
         const {
             orderBy = 'asc',
             orderField = 'registrationDate',
@@ -121,7 +115,7 @@ export class EventService {
                 },
                 orderBy: { [orderField]: orderBy },
                 take: perPage,
-                skip: perPage * page,
+                skip: perPage * (page - 1),
             })
             .then((response) => {
                 return {

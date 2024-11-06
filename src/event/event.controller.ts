@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { EventService } from './event.service';
-import { createEventDto, createEventDtoList } from './event.model.dto';
+import {
+    createEventDto,
+    createEventDtoList,
+    filterEvent,
+    search,
+} from './event.model.dto';
 
 @Controller('event')
 export class EventController {
@@ -24,18 +29,7 @@ export class EventController {
     @Post('list')
     async getList(
         @Body()
-        data: {
-            orderField?: string;
-            orderBy?: 'asc' | 'desc';
-            filter?: {
-                name?: string;
-                eventName?: string;
-                companyName?: string;
-                registrationDate?: string;
-            };
-            page?: number;
-            perPage?: number;
-        },
+        data: filterEvent<search>,
     ) {
         return this.eventService.eventsList(data);
     }

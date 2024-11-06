@@ -2,6 +2,7 @@ import {
     IsArray,
     IsDateString,
     IsNotEmpty,
+    IsOptional,
     Validate,
     ValidateNested,
 } from 'class-validator';
@@ -29,4 +30,37 @@ export class createEventDtoList {
     @ValidateNested({ each: true })
     @Type(() => createEventDto)
     events: createEventDto[];
+}
+
+export class filterEvent<T> {
+    @IsOptional()
+    orderField?: string = 'registrationDate';
+
+    @IsOptional()
+    orderBy?: 'asc' | 'desc' = 'asc';
+
+    @IsOptional()
+    filter?: T;
+
+    @IsOptional()
+    page?: number = 1;
+
+    @IsOptional()
+    perPage?: number = 10;
+}
+
+export class search {
+    @IsOptional()
+    name?: string;
+
+    @IsOptional()
+    eventName?: string;
+
+    @IsOptional()
+    companyName?: string;
+
+    @IsOptional()
+    @IsDateString()
+    @Validate(CustomValidateDate)
+    registrationDate?: string;
 }
