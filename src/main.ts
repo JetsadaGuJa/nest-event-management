@@ -23,7 +23,7 @@ function getAllConstraints(
                 constraints.push({
                     index: indexList || null,
                     field: error.property,
-                    massage: constraintValues.join(','),
+                    message: constraintValues.join(','),
                 });
             }
 
