@@ -97,7 +97,7 @@ export class EventService {
             // perPage = 10,
             filter = {},
         } = data;
-        this.logger.debug('Filter data!! ==>', filter);
+        const startDate = new Date(`${filter.registrationDate}`);
 
         const eventCount = await this.prisma.event.count();
         return await this.prisma.event
@@ -112,12 +112,7 @@ export class EventService {
                         : {},
                     registrationDate: filter?.registrationDate
                         ? {
-                              gte: new Date(filter?.registrationDate)
-                                  .setHours(0)
-                                  .toString(),
-                              lte: new Date(filter?.registrationDate)
-                                  .setHours(23)
-                                  .toString(),
+                              gte: startDate.toISOString(),
                           }
                         : {},
                 },
