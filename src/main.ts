@@ -12,7 +12,7 @@ import { ValidationError } from 'class-validator';
 
 function getAllConstraints(
     errors: ValidationError[],
-    indexList?: string,
+    indexList?: number,
 ): any[] {
     const constraints: any[] = [];
 
@@ -20,17 +20,17 @@ function getAllConstraints(
         {
             if (error.constraints) {
                 const constraintValues = Object.values(error.constraints);
-                constraints.push(
-                    `${indexList ? `index: ${indexList} ` : ''}property: "${
-                        error.property
-                    }" message: ${constraintValues}`,
-                );
+                constraints.push({
+                    index: indexList || null,
+                    field: error.property,
+                    massage: constraintValues.join(','),
+                });
             }
 
             if (error.children) {
                 const childConstraints = getAllConstraints(
                     error.children,
-                    `${index}`,
+                    index,
                 );
                 constraints.push(...childConstraints);
             }
