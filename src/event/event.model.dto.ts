@@ -34,7 +34,7 @@ export class createEventDtoList {
 
 export class filterEvent<T> {
     @IsOptional()
-    orderField?: string = 'registrationDate';
+    orderField?: string = 'id';
 
     @IsOptional()
     orderBy?: 'asc' | 'desc' = 'desc';

@@ -92,7 +92,7 @@ export class EventService {
     async eventsList(data: filterEvent<search>) {
         const {
             orderBy = 'desc',
-            orderField = 'registrationDate',
+            orderField = 'id',
             // page = 1,
             // perPage = 10,
             filter = {},
